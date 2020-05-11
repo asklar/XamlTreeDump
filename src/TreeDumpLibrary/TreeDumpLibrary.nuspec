@@ -13,9 +13,7 @@
     <!-- ... -->
     <dependencies>
       <!-- <group targetFramework=".NETCore5.0"/> -->
-      <group targetFramework="uap10.0">
-        <dependency id="Microsoft.UI.Xaml.Markup" version="10.0" />
-      </group>
+      <group targetFramework="uap10.0" />
     </dependencies>
   </metadata>
   <files>
