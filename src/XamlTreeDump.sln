@@ -1,0 +1,69 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30011.22
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TreeDumpLibrary", "TreeDumpLibrary\TreeDumpLibrary.csproj", "{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{8A657652-3454-4845-9C67-948A6CFC4151}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|ARM = Debug|ARM
+		Debug|ARM64 = Debug|ARM64
+		Debug|x64 = Debug|x64
+		Debug|x86 = Debug|x86
+		Release|ARM = Release|ARM
+		Release|ARM64 = Release|ARM64
+		Release|x64 = Release|x64
+		Release|x86 = Release|x86
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|ARM.ActiveCfg = Debug|ARM
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|ARM.Build.0 = Debug|ARM
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|ARM64.Build.0 = Debug|ARM64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|x64.ActiveCfg = Debug|x64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|x64.Build.0 = Debug|x64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|x86.ActiveCfg = Debug|x86
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Debug|x86.Build.0 = Debug|x86
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|ARM.ActiveCfg = Release|ARM
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|ARM.Build.0 = Release|ARM
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|ARM64.ActiveCfg = Release|ARM64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|ARM64.Build.0 = Release|ARM64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|x64.ActiveCfg = Release|x64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|x64.Build.0 = Release|x64
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|x86.ActiveCfg = Release|x86
+		{C0A6BD9C-3EE5-4B12-8CE4-CEE95178539C}.Release|x86.Build.0 = Release|x86
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|ARM.ActiveCfg = Debug|ARM
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|ARM.Build.0 = Debug|ARM
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|ARM.Deploy.0 = Debug|ARM
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|ARM64.ActiveCfg = Debug|ARM64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|ARM64.Build.0 = Debug|ARM64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|ARM64.Deploy.0 = Debug|ARM64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|x64.ActiveCfg = Debug|x64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|x64.Build.0 = Debug|x64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|x64.Deploy.0 = Debug|x64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|x86.ActiveCfg = Debug|x86
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|x86.Build.0 = Debug|x86
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Debug|x86.Deploy.0 = Debug|x86
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|ARM.ActiveCfg = Release|ARM
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|ARM.Build.0 = Release|ARM
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|ARM.Deploy.0 = Release|ARM
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|ARM64.ActiveCfg = Release|ARM64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|ARM64.Build.0 = Release|ARM64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|ARM64.Deploy.0 = Release|ARM64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|x64.ActiveCfg = Release|x64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|x64.Build.0 = Release|x64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|x64.Deploy.0 = Release|x64
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|x86.ActiveCfg = Release|x86
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|x86.Build.0 = Release|x86
+		{8A657652-3454-4845-9C67-948A6CFC4151}.Release|x86.Deploy.0 = Release|x86
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {52B849C1-10EA-403F-9EC9-0522151FB8D4}
+	EndGlobalSection
+EndGlobal
