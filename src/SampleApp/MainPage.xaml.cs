@@ -25,6 +25,8 @@ namespace SampleApp
         public MainPage()
         {
             this.InitializeComponent();
+
+            var dump = TreeDumpLibrary.VisualTreeDumper.DumpTree(this, null, new List<string>(), TreeDumpLibrary.DumpTreeMode.Json);
         }
     }
 }

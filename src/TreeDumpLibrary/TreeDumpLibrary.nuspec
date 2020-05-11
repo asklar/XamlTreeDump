@@ -19,6 +19,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Debug\*.*" target="lib\uap10.0"/>
+    <file src="bin\Release\*.*" target="lib\uap10.0"/>
   </files>
 </package>
