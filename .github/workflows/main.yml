@@ -25,7 +25,16 @@ jobs:
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
 
-    - name: build
+    - name: build x86
+      run: msbuild /restore src\TreeDumpLibrary\TreeDumpLibrary.csproj /p:platform=x86 /p:configuration=release
+
+    - name: build x64
+      run: msbuild /restore src\TreeDumpLibrary\TreeDumpLibrary.csproj /p:platform=x64 /p:configuration=release
+
+    - name: pack
+      run: nuget pack src\TreeDumpLibrary\TreeDumpLibrary.nuspec
+
+    - name: build x86
       run: msbuild /restore src\XamlTreeDump.sln /p:platform=x86 /p:configuration=debug
 
     - name: Setup VSTest.console.exe

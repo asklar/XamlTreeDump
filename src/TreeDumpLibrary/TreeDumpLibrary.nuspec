@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <!-- Required elements-->
+    <id>XamlTreeDump</id>
+    <version>1.0.0</version>
+    <description>A Windows UWP XAML tree dump library</description>
+    <authors>Alexander Sklar</authors>
+    <!-- Optional elements -->
+    <projectUrl>https://github.com/asklar/XamlTreeDump</projectUrl>
+    <license type="expression">MIT</license>
+    <repository type="git" url="https://github.com/asklar/XamlTreeDump.git" branch="dev" />
+    <!-- ... -->
+  </metadata>
+  <files>
+    <file src="bin\x86\Debug\TreeDumpLibrary.winmd" target="lib/x86"/>
+    <file src="bin\x64\Debug\TreeDumpLibrary.winmd" target="lib/x64"/>
+  </files>
+</package>
