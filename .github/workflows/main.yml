@@ -31,6 +31,9 @@ jobs:
     - name: build x64
       run: msbuild /restore src\TreeDumpLibrary\TreeDumpLibrary.csproj /p:platform=x64 /p:configuration=release
 
+    - name: Setup Nuget.exe
+      uses: warrenbuckley/Setup-Nuget@v1
+
     - name: pack
       run: nuget pack src\TreeDumpLibrary\TreeDumpLibrary.nuspec
 
