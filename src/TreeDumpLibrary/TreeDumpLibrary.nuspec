@@ -13,7 +13,7 @@
     <!-- ... -->
   </metadata>
   <files>
-    <file src="bin\x86\Debug\TreeDumpLibrary.winmd" target="lib/x86"/>
-    <file src="bin\x64\Debug\TreeDumpLibrary.winmd" target="lib/x64"/>
+    <file src="bin\x86\Release\TreeDumpLibrary.winmd" target="lib/x86"/>
+    <file src="bin\x64\Release\TreeDumpLibrary.winmd" target="lib/x64"/>
   </files>
 </package>
