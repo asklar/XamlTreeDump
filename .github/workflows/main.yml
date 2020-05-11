@@ -27,3 +27,6 @@ jobs:
 
     - name: build
       run: msbuild /restore src\XamlTreeDump.sln /p:platform=x86 /p:configuration=debug
+
+    - name: test
+      run: vstest.console.exe /platform:x86 src\UnitTests\bin\x86\Debug\UnitTests.build.appxrecipe
