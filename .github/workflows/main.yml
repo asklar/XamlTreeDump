@@ -25,17 +25,17 @@ jobs:
     - name: setup-msbuild
       uses: microsoft/setup-msbuild@v1
 
-    - name: build x86
-      run: msbuild /restore src\TreeDumpLibrary\TreeDumpLibrary.csproj /p:platform=x86 /p:configuration=release
-
-    - name: build x64
-      run: msbuild /restore src\TreeDumpLibrary\TreeDumpLibrary.csproj /p:platform=x64 /p:configuration=release
+    - name: build any cpu
+      run: msbuild /restore src\TreeDumpLibrary\TreeDumpLibrary.csproj /p:configuration=release
 
     - name: Setup Nuget.exe
       uses: warrenbuckley/Setup-Nuget@v1
 
     - name: pack
       run: nuget pack src\TreeDumpLibrary\TreeDumpLibrary.nuspec
+
+    - name: build sample
+      run: msbuild /restore src\SampleApp /p:configuration=debug /p:platform=x86
 
     - name: build x86
       run: msbuild /restore src\XamlTreeDump.sln /p:platform=x86 /p:configuration=debug

@@ -11,9 +11,14 @@
     <license type="expression">MIT</license>
     <repository type="git" url="https://github.com/asklar/XamlTreeDump.git" branch="dev" />
     <!-- ... -->
+    <dependencies>
+      <!-- <group targetFramework=".NETCore5.0"/> -->
+      <group targetFramework="uap10.0">
+        <dependency id="Microsoft.UI.Xaml.Markup" version="10.0" />
+      </group>
+    </dependencies>
   </metadata>
   <files>
-    <file src="bin\x86\Release\TreeDumpLibrary.winmd" target="lib/x86"/>
-    <file src="bin\x64\Release\TreeDumpLibrary.winmd" target="lib/x64"/>
+    <file src="bin\Debug\*.*" target="lib\uap10.0"/>
   </files>
 </package>
