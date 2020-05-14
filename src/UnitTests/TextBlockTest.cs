@@ -9,7 +9,7 @@ namespace UnitTests
     {
 
         [TestMethod]
-        public void CompareByString()
+        public void ByString()
         {
             var dump = Helper.GetDump(() =>
             {
@@ -33,7 +33,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void CompareByJson()
+        public void ByJson()
         {
             var obj = new JObject {
                 { "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
