@@ -6,7 +6,10 @@ using Windows.UI.Xaml;
 
 namespace TreeDumpLibrary
 {
-    public sealed class DefaultVisualTreeLogger : IVisualTreeLogger
+    /// <summary>
+    /// A key=value -based tree logger. Deprecated.
+    /// </summary>
+    internal sealed class DefaultVisualTreeLogger : IVisualTreeLogger
     {
         public void BeginNode(int indent, string nodeName, DependencyObject obj, bool hasProperties)
         {

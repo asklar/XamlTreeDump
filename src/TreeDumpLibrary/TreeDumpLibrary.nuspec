@@ -3,7 +3,7 @@
   <metadata>
     <!-- Required elements-->
     <id>XamlTreeDump</id>
-    <version>1.0.0</version>
+    <version>1.0.1</version>
     <description>A Windows UWP XAML tree dump library</description>
     <authors>Alexander Sklar</authors>
     <!-- Optional elements -->

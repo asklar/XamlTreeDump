@@ -6,7 +6,10 @@ using Windows.UI.Xaml;
 
 namespace TreeDumpLibrary
 {
-    public sealed class JsonVisualTreeLogger : IVisualTreeLogger
+    /// <summary>
+    /// A Json-based tree format
+    /// </summary>
+    internal sealed class JsonVisualTreeLogger : IVisualTreeLogger
     {
         private readonly StringBuilder _logger = new StringBuilder();
         public void BeginArray(int indent, string propertyName)

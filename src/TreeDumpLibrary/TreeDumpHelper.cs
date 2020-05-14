@@ -14,6 +14,9 @@ using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
 {
+    /// <summary>
+    /// Utility class
+    /// </summary>
     public static class TreeDumpHelper
     {
 
@@ -92,6 +95,17 @@ namespace TreeDumpLibrary
             }
         }
 
+        /// <summary>
+        /// Compares two tree dump outputs
+        /// </summary>
+        /// <param name="dumpExpectedText">The JSON representing the expected tree</param>
+        /// <param name="dumpText">The JSON representing the actual output</param>
+        /// <returns>
+        /// Performs a semantic comparison of the two trees following these rules:
+        /// - a property value of "&lt;ANYTHING&gt;" will compare as equal to any value in the output
+        /// - types and elements must match
+        /// - numbers are compared to within a precision of <see cref="epsilon"/> (1.0)
+        /// </returns>
         public static bool DumpsAreEqual(string dumpExpectedText, string dumpText)
         {
             JsonValue expected = JsonValue.Parse(dumpExpectedText);
@@ -223,11 +237,21 @@ namespace TreeDumpLibrary
             return true;
         }
 
+        /// <summary>
+        /// The path where to write a tree dump output
+        /// </summary>
+        /// <param name="dumpID"></param>
+        /// <returns>The output path underneath the app package install path</returns>
         public static string GetOutputFile(string dumpID)
         {
             return "TreeDump\\" + dumpID + ".json";
         }
 
+        /// <summary>
+        /// Where to locate the master file for a particular scenario ID
+        /// </summary>
+        /// <param name="dumpID"></param>
+        /// <returns>the path, relative to the root of the app package (i.e. under the Assets folder)</returns>
         public static string GetMasterFile(string dumpID)
         {
             return "TreeDump\\masters\\" + dumpID + ".json";

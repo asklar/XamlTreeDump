@@ -16,12 +16,24 @@ using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
 {
+    /// <summary>
+    /// The mode to use (Default, or Json)
+    /// </summary>
     public enum DumpTreeMode
     {
+        /// <summary>
+        /// a Key=Value format
+        /// </summary>
         Default,
+        /// <summary>
+        /// Json format
+        /// </summary>
         Json
     }
 
+    /// <summary>
+    /// The main class in this library
+    /// </summary>
     public sealed class VisualTreeDumper
     {
         class Visitor
@@ -117,6 +129,11 @@ namespace TreeDumpLibrary
             return null;
         }
 
+        /// <summary>
+        /// Reserved for use by RNW's RNTester
+        /// </summary>
+        /// <param name="root"></param>
+        /// <returns></returns>
         public static IAsyncOperation<bool> DoesTreeDumpMatchForRNTester(DependencyObject root)
         {
             string json = DumpTree(root, null, new string[] { }, DumpTreeMode.Json);
@@ -140,6 +157,14 @@ namespace TreeDumpLibrary
             }
         }
 
+        /// <summary>
+        /// The main entry point to the library. Produces a tre dump starting at <paramref name="root"/>
+        /// </summary>
+        /// <param name="root">The node to start the walk from</param>
+        /// <param name="excludedNode">A node to exclude, or null</param>
+        /// <param name="additionalProperties">a list of additional properties to extract from each node</param>
+        /// <param name="mode">The format to use (Json or default)</param>
+        /// <returns></returns>
         public static string DumpTree(DependencyObject root, DependencyObject excludedNode, IList<string> additionalProperties, DumpTreeMode mode)
         {
             var propertyFilter = new DefaultFilter();
@@ -240,7 +265,11 @@ namespace TreeDumpLibrary
             }
         }
     }
-    public sealed class DefaultFilter
+    
+    /// <summary>
+    /// The set of properties to report
+    /// </summary>
+    internal sealed class DefaultFilter
     {
         public IList<string> PropertyNameAllowList { get; set; }
 
@@ -279,7 +308,7 @@ namespace TreeDumpLibrary
             return (PropertyNameAllowList.Contains(propertyName));
         }
     }
-    public sealed class DefaultPropertyValueTranslator : IPropertyValueTranslator
+    internal sealed class DefaultPropertyValueTranslator : IPropertyValueTranslator
     {
         public string PropertyValueToString(string propertyName, object propertyObject)
         {
@@ -302,7 +331,7 @@ namespace TreeDumpLibrary
         }
     }
 
-    public sealed class JsonPropertyValueTranslator : IPropertyValueTranslator
+    internal sealed class JsonPropertyValueTranslator : IPropertyValueTranslator
     {
         public string PropertyValueToString(string propertyName, object propertyObject)
         {

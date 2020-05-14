@@ -3,8 +3,17 @@
 
 namespace TreeDumpLibrary
 {
+    /// <summary>
+    /// Translates values into a serialized format
+    /// </summary>
     public interface IPropertyValueTranslator
     {
+        /// <summary>
+        /// Converts a property name and value to a serialization format
+        /// </summary>
+        /// <param name="propertyName"></param>
+        /// <param name="propertyObject"></param>
+        /// <returns></returns>
         string PropertyValueToString(string propertyName, object propertyObject);
     }
 }
