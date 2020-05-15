@@ -6,7 +6,7 @@ namespace TreeDumpLibrary
     /// <summary>
     /// Translates values into a serialized format
     /// </summary>
-    public interface IPropertyValueTranslator
+    internal interface IPropertyValueTranslator
     {
         /// <summary>
         /// Converts a property name and value to a serialization format

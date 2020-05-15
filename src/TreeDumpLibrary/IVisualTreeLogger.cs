@@ -8,7 +8,7 @@ namespace TreeDumpLibrary
     /// <summary>
     /// Abstracts output formats for a tree logger
     /// </summary>
-    public interface IVisualTreeLogger
+    internal interface IVisualTreeLogger
     {
         /// <summary>
         /// Called when starting a node visit

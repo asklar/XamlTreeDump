@@ -108,7 +108,7 @@ namespace TreeDumpLibrary
             }
         }
 
-        private static JsonObject FindElementByAutomationId(JsonObject obj, string automationId)
+        public static JsonObject FindElementByAutomationId(JsonObject obj, string automationId)
         {
             if (obj.Keys.Contains("AutomationId") && obj["AutomationId"].GetString() == automationId)
             {
