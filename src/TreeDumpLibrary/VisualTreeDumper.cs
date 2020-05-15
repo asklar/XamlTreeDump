@@ -130,34 +130,6 @@ namespace TreeDumpLibrary
         }
 
         /// <summary>
-        /// Reserved for use by RNW's RNTester
-        /// </summary>
-        /// <param name="root"></param>
-        /// <returns></returns>
-        public static IAsyncOperation<bool> DoesTreeDumpMatchForRNTester(DependencyObject root)
-        {
-            string json = DumpTree(root, null, new string[] { }, DumpTreeMode.Json);
-            try
-            {
-                var obj = JsonValue.Parse(json).GetObject();
-                var element = FindElementByAutomationId(obj, "PageHeader");
-                if (element == null)
-                {
-                    return Task.Run(() => false).AsAsyncOperation();
-                }
-                var value = element.GetNamedString("Text");
-                var pageName = new Regex(@"[<|>]").Replace(value, "");
-                var match = TreeDumpHelper.MatchDump(json, pageName);
-                return match.AsAsyncOperation();
-            }
-            catch
-            {
-                Debug.WriteLine("JSON ERROR:\n" + json);
-                throw;
-            }
-        }
-
-        /// <summary>
         /// The main entry point to the library. Produces a tre dump starting at <paramref name="root"/>
         /// </summary>
         /// <param name="root">The node to start the walk from</param>

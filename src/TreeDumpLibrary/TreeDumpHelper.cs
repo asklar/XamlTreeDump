@@ -3,14 +3,10 @@
 
 using System;
 using System.Linq;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Data.Json;
-using Windows.Storage;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
@@ -39,61 +35,6 @@ namespace TreeDumpLibrary
             }
 
             return null;
-        }
-
-        internal static async Task<bool> MatchTreeDumpFromLayoutUpdateAsync(string dumpID, string uiaId, TextBlock textBlock, IList<string> additionalProperties, DumpTreeMode mode, string dumpExpectedText)
-        {
-            // First find root
-            DependencyObject current = textBlock;
-            DependencyObject parent = VisualTreeHelper.GetParent(current);
-            while (parent != null)
-            {
-                current = parent;
-                parent = VisualTreeHelper.GetParent(current);
-            }
-
-            DependencyObject dumpRoot = current;
-            // if UIAID is passed in from test, find the matching child as the root to dump
-            if (uiaId != null)
-            {
-                var matchingNode = FindChildWithMatchingUIAID(current, uiaId);
-                if (matchingNode != null)
-                {
-                    dumpRoot = matchingNode;
-                }
-            }
-
-            string dumpText = VisualTreeDumper.DumpTree(dumpRoot, textBlock /* exclude */, additionalProperties, mode);
-            if (dumpText != dumpExpectedText)
-            {
-                return await MatchDump(dumpText, dumpID);
-            }
-            return true;
-        }
-
-
-        internal static async Task<bool> MatchDump(string outputJson, string dumpID)
-        {
-            Debug.WriteLine($"master file = {Windows.ApplicationModel.Package.Current.InstalledLocation.Path}\\Assets\\{GetMasterFile(dumpID)}");
-            StorageFolder storageFolder = ApplicationData.Current.LocalFolder;
-            string fileName = GetOutputFile(dumpID);
-            Debug.WriteLine($"output file = {storageFolder.Path + "\\" + fileName}");
-
-            StorageFile outFile = await storageFolder.CreateFileAsync(fileName, CreationCollisionOption.ReplaceExisting);
-            await FileIO.WriteTextAsync(outFile, outputJson);
-
-            StorageFile masterFile = await Windows.ApplicationModel.Package.Current.InstalledLocation.GetFileAsync($@"Assets\{GetMasterFile(dumpID)}");
-
-            string masterJson = await FileIO.ReadTextAsync(masterFile);
-
-            if (!DumpsAreEqual(masterJson, outputJson))
-            {
-                return false;
-            }
-            else
-            {
-                return true;
-            }
         }
 
         /// <summary>
@@ -249,26 +190,6 @@ namespace TreeDumpLibrary
                 }
             }
             return true;
-        }
-
-        /// <summary>
-        /// The path where to write a tree dump output
-        /// </summary>
-        /// <param name="dumpID"></param>
-        /// <returns>The output path underneath the app package install path</returns>
-        public static string GetOutputFile(string dumpID)
-        {
-            return "TreeDump\\" + dumpID + ".json";
-        }
-
-        /// <summary>
-        /// Where to locate the master file for a particular scenario ID
-        /// </summary>
-        /// <param name="dumpID"></param>
-        /// <returns>the path, relative to the root of the app package (i.e. under the Assets folder)</returns>
-        public static string GetMasterFile(string dumpID)
-        {
-            return "TreeDump\\masters\\" + dumpID + ".json";
         }
     }
 }
