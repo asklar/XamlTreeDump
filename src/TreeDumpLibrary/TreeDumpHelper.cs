@@ -16,7 +16,12 @@ namespace TreeDumpLibrary
     /// </summary>
     public static class TreeDumpHelper
     {
-
+        /// <summary>
+        /// Finds the child with matching UI Automation id.
+        /// </summary>
+        /// <param name="element">The element.</param>
+        /// <param name="uiaId">The uia identifier.</param>
+        /// <returns></returns>
         public static DependencyObject FindChildWithMatchingUIAID(DependencyObject element, string uiaId)
         {
             string automationId = (string)element.GetValue(Windows.UI.Xaml.Automation.AutomationProperties.AutomationIdProperty);

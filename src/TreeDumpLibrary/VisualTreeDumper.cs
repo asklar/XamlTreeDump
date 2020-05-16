@@ -108,6 +108,12 @@ namespace TreeDumpLibrary
             }
         }
 
+        /// <summary>
+        /// Finds the element by automation identifier.
+        /// </summary>
+        /// <param name="obj">The object.</param>
+        /// <param name="automationId">The automation identifier.</param>
+        /// <returns></returns>
         public static JsonObject FindElementByAutomationId(JsonObject obj, string automationId)
         {
             if (obj.Keys.Contains("AutomationId") && obj["AutomationId"].GetString() == automationId)
