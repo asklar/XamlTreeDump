@@ -25,3 +25,4 @@ will perform a semantic comparison of the two dumps by following these rules:
 3) `DependencyObject`s with a `Visibility == Collapsed` will be compared as if they do not exist
 4) `ScrollBar` types will be ignored (since UI automation can sometimes hover over them and trigger them on accident)
 
+See [UnitTests](https://github.com/asklar/XamlTreeDump/tree/master/src/UnitTests) for more usage and examples.
