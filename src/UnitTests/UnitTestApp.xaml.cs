@@ -53,7 +53,7 @@ namespace UnitTests
                 this.DebugSettings.EnableFrameRateCounter = true;
             }
 #endif
-
+            this.RequestedTheme = ApplicationTheme.Light;
             Frame rootFrame = Window.Current.Content as Frame;
 
             // Do not repeat app initialization when the Window already has content,
