@@ -6,12 +6,14 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
@@ -332,6 +334,32 @@ namespace TreeDumpLibrary
                 // comparing doubles is numerically unstable so just compare their integer parts
                 Size size = (Size)propertyObject;
                 return $"[{(int)size.Width}, {(int)size.Height}]";
+            }
+            else if(propertyObject is IList<TextHighlighter>)
+            {
+                var sb = new StringBuilder();
+                sb.Append("[");
+
+                foreach (var th in propertyObject as IList<TextHighlighter>)
+                {
+                    var background = (SolidColorBrush)th.Background;
+                    sb.Append("\"(" + background.Color.ToString() + ",");
+
+                    var ranges = th.Ranges;
+                    foreach (var r in ranges)
+                    {
+                        sb.Append("(" + r.StartIndex + "," + r.Length + ")");
+                    }
+                    sb.Append(")\", ");
+                }
+
+                if (sb.Length > 1)
+                {
+                  sb.Remove(sb.ToString().LastIndexOf(','), 2);
+                }
+                sb.Append("]");
+
+                return sb.ToString();
             }
             return Quote(propertyObject.ToString());
         }
