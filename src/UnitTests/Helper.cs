@@ -33,11 +33,15 @@ namespace UnitTests
             return manualResetEvent;
         }
 
-        internal static string GetDump(Func<DependencyObject> creator)
+        internal static string GetDump(Func<DependencyObject> creator, IList<string> extraProps = null)
         {
+            if (extraProps == null)
+            {
+                extraProps = new List<string>();
+            }
             return RunOnUIThread(() =>
             {
-                return TreeDumpLibrary.VisualTreeDumper.DumpTree(creator(), null, new List<string>(), TreeDumpLibrary.DumpTreeMode.Json);
+                return TreeDumpLibrary.VisualTreeDumper.DumpTree(creator(), null, extraProps, TreeDumpLibrary.DumpTreeMode.Json);
             });
         }
 
