@@ -29,7 +29,7 @@
         Executable="$targetnametoken$.exe"
         EntryPoint="UnitTests.App">
       <uap:VisualElements
-        DisplayName="UnitTests"
+        DisplayName="TreeDumpLibrary UnitTests"
         Square150x150Logo="Assets\Square150x150Logo.png"
         Square44x44Logo="Assets\Square44x44Logo.png"
         Description="UnitTests"
