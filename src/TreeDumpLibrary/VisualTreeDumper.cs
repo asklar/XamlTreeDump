@@ -2,16 +2,17 @@
 // Licensed under the MIT License.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using Windows.Data.Json;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Automation;
+using Windows.UI.Xaml.Documents;
 using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
@@ -329,6 +330,44 @@ namespace TreeDumpLibrary
                 // comparing doubles is numerically unstable so just compare their integer parts
                 Size size = (Size)propertyObject;
                 return $"[{(int)size.Width}, {(int)size.Height}]";
+            }
+            else if (propertyObject is TextHighlighter)
+            {
+                var th = propertyObject as TextHighlighter;
+                return $"{{\n\"Background\": {PropertyValueToString(null, th.Background)},\n\"Ranges\": {PropertyValueToString(null, th.Ranges)}\n}}\n";
+            }
+            else if (propertyObject is TextRange)
+            {
+                var tr = (TextRange)propertyObject;
+                return new JsonObject
+                {
+                    { "StartIndex", JsonValue.CreateNumberValue(tr.StartIndex) },
+                    { "Length", JsonValue.CreateNumberValue(tr.Length) },
+                }.ToString();
+            }
+            else if (propertyObject is string)
+            {
+                return Quote(propertyObject.ToString());
+            }
+            else if (propertyObject is IEnumerable)
+            {
+                var sb = new StringBuilder();
+                sb.Append("[");
+                bool first = true;
+                foreach (var i in (propertyObject as IEnumerable))
+                {
+                    if (!first)
+                    {
+                        sb.Append(",");
+                    }
+                    else
+                    {
+                        first = false;
+                    }
+                    sb.Append(PropertyValueToString(null, i));
+                }
+                sb.Append("]");
+                return sb.ToString();
             }
             return Quote(propertyObject.ToString());
         }
