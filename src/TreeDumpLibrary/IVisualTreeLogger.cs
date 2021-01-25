@@ -16,24 +16,21 @@ namespace TreeDumpLibrary
         /// <param name="indent"></param>
         /// <param name="nodeName"></param>
         /// <param name="obj"></param>
-        /// <param name="hasProperties"></param>
-        void BeginNode(int indent, string nodeName, DependencyObject obj, bool hasProperties);
+        void BeginNode(int indent, string nodeName, DependencyObject obj);
         /// <summary>
         /// Called when ending a node visit
         /// </summary>
         /// <param name="indent"></param>
         /// <param name="nodeName"></param>
         /// <param name="obj"></param>
-        /// <param name="isLast"></param>
-        void EndNode(int indent, string nodeName, DependencyObject obj, bool isLast);
+        void EndNode(int indent, string nodeName, DependencyObject obj);
         /// <summary>
         /// Called to log a property in a node
         /// </summary>
         /// <param name="indent"></param>
         /// <param name="propertyName"></param>
         /// <param name="propertyValue"></param>
-        /// <param name="isLast"></param>
-        void LogProperty(int indent, string propertyName, object propertyValue, bool isLast);
+        void LogProperty(int indent, string propertyName, object propertyValue);
         /// <summary>
         /// Gets the output data
         /// </summary>

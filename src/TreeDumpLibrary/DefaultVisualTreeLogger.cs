@@ -11,16 +11,16 @@ namespace TreeDumpLibrary
     /// </summary>
     internal sealed class DefaultVisualTreeLogger : IVisualTreeLogger
     {
-        public void BeginNode(int indent, string nodeName, DependencyObject obj, bool hasProperties)
+        public void BeginNode(int indent, string nodeName, DependencyObject obj)
         {
             AppendLogger(indent, $"[{nodeName}]");
         }
 
-        public void EndNode(int indent, string nodeName, DependencyObject obj, bool isLast)
+        public void EndNode(int indent, string nodeName, DependencyObject obj)
         { // no-op
         }
 
-        public void LogProperty(int indent, string propertyName, object propertyValue, bool isLast)
+        public void LogProperty(int indent, string propertyName, object propertyValue)
         {
             AppendLogger(indent, $"{propertyName}={propertyValue}");
         }

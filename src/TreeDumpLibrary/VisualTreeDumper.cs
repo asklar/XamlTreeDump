@@ -49,15 +49,15 @@ namespace TreeDumpLibrary
                 _translator = translator;
                 _logger = logger;
             }
-            public void EndVisitNode(DependencyObject obj, bool isLast)
+            public void EndVisitNode(DependencyObject obj)
             {
                 _indent--;
-                _logger.EndNode(_indent, obj.GetType().FullName, obj, isLast);
+                _logger.EndNode(_indent, obj.GetType().FullName, obj);
             }
 
-            public void BeginVisitNode(DependencyObject obj, bool hasProperties)
+            public void BeginVisitNode(DependencyObject obj)
             {
-                _logger.BeginNode(_indent, obj.GetType().FullName, obj, hasProperties);
+                _logger.BeginNode(_indent, obj.GetType().FullName, obj);
                 _indent++;
             }
 
@@ -79,10 +79,10 @@ namespace TreeDumpLibrary
                 return _filter.ShouldVisitProperty(propertyName);
             }
 
-            public void VisitProperty(string propertyName, object value, bool isLast)
+            public void VisitProperty(string propertyName, object value)
             {
                 var v = _translator.PropertyValueToString(propertyName, value);
-                _logger.LogProperty(_indent + 1, propertyName, v, isLast);
+                _logger.LogProperty(_indent + 1, propertyName, v);
             }
 
             public void BeginChildren()
@@ -178,13 +178,12 @@ namespace TreeDumpLibrary
                     var property = properties[i];
                     object value = null;
                     value = GetObjectProperty(node, property);
-                    bool isLast = (i == properties.Length - 1) && !hasChildren && (automationId == null);
-                    visitor.VisitProperty(property.Name, value, isLast);
+                    visitor.VisitProperty(property.Name, value);
                 }
 
                 if (automationId != null)
                 {
-                    visitor.VisitProperty("AutomationId", automationId, !hasChildren);
+                    visitor.VisitProperty("AutomationId", automationId);
                 }
             }
         }
@@ -214,15 +213,14 @@ namespace TreeDumpLibrary
             return dos.Where((n) => visitor.ShouldVisitPropertiesForNode(n)).ToArray();
         }
 
-        private static void WalkThroughTree(DependencyObject node, DependencyObject excludedNode, Visitor visitor, bool isLast = true)
+        private static void WalkThroughTree(DependencyObject node, DependencyObject excludedNode, Visitor visitor)
         {
             if (node != null && visitor.ShouldVisitPropertiesForNode(node))
             {
                 // Assume that if we have a UIElement, we'll have some properties
                 var children = GetChildren(node, visitor);
-                bool hasProperties = node is UIElement || (children.Length > 0);
 
-                visitor.BeginVisitNode(node, hasProperties);
+                visitor.BeginVisitNode(node);
 
                 WalkThroughProperties(node, visitor, children.Length != 0);
                 if (children.Length != 0)
@@ -233,13 +231,12 @@ namespace TreeDumpLibrary
                         var child = children[i];
                         if (child != excludedNode)
                         {
-                            bool isLastChild = (i == children.Length - 1);
-                            WalkThroughTree(child, excludedNode, visitor, isLastChild);
+                            WalkThroughTree(child, excludedNode, visitor);
                         }
                     }
                     visitor.EndChildren();
                 }
-                visitor.EndVisitNode(node, isLast);
+                visitor.EndVisitNode(node);
             }
         }
     }
