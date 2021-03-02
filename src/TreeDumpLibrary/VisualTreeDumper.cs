@@ -162,24 +162,53 @@ namespace TreeDumpLibrary
             return visitor.ToString();
         }
 
+        private class PropertyInfoComparer : IEqualityComparer<PropertyInfo>
+        {
+            public bool Equals(PropertyInfo x, PropertyInfo y)
+            {
+                return x.Name + "Property" == y.Name || x.Name == y.Name + "Property";
+            }
+
+            public int GetHashCode(PropertyInfo obj)
+            {
+                throw new NotImplementedException();
+            }
+        }
+
         private static void WalkThroughProperties(DependencyObject node, Visitor visitor, bool hasChildren)
         {
             if (visitor.ShouldVisitPropertiesForNode(node))
             {
-                var properties = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
+                var selfProps = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
                                   where visitor.ShouldVisitProperty(property.Name) &&
                                         visitor.ShouldVisitPropertyValue(property.Name,
                                             GetObjectProperty(node, property))
                                   orderby property.Name
-                                  select property).ToArray();
+                                  select property);
+
+                var attachedPropInfo = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Static)
+                                        where property.Name.EndsWith("Property") &&
+                                              visitor.ShouldVisitProperty(property.Name.Substring(0, property.Name.Length - "Property".Length)) &&
+                                              !selfProps.Contains(property, new PropertyInfoComparer()) &&
+                                              typeof(DependencyProperty).IsAssignableFrom(property.PropertyType)
+                                        orderby property.Name
+                                        select property);
+                
                 var automationId = node.GetValue(AutomationProperties.AutomationIdProperty);
 
-                for (int i = 0; i < properties.Length; i++)
+                foreach (var prop in selfProps)
                 {
-                    var property = properties[i];
                     object value = null;
-                    value = GetObjectProperty(node, property);
-                    visitor.VisitProperty(property.Name, value);
+                    value = GetObjectProperty(node, prop);
+                    visitor.VisitProperty(prop.Name, value);
+                }
+
+                foreach (var prop in attachedPropInfo)
+                {
+                    var attachedDP = prop.GetValue(null) as DependencyProperty;
+                    var name = prop.Name.Substring(0, prop.Name.Length - "Property".Length);
+                    var value = node.GetValue(attachedDP);
+                    visitor.VisitProperty(name, value);
                 }
 
                 if (automationId != null)
@@ -269,7 +298,7 @@ namespace TreeDumpLibrary
                 "Clip",
                 "FlowDirection",
                 "Name",
-                "Text"
+                "Text",
                 /*"ActualOffset" 19h1*/
             };
         }
