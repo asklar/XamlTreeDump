@@ -3,13 +3,13 @@
   <metadata>
     <!-- Required elements-->
     <id>XamlTreeDump</id>
-    <version>1.0.2</version>
+    <version>1.0.7</version>
     <description>A Windows UWP XAML tree dump library</description>
     <authors>Alexander Sklar</authors>
     <!-- Optional elements -->
     <projectUrl>https://github.com/asklar/XamlTreeDump</projectUrl>
     <license type="expression">MIT</license>
-    <repository type="git" url="https://github.com/asklar/XamlTreeDump.git" branch="dev" />
+    <repository type="git" url="https://github.com/asklar/XamlTreeDump.git" branch="master" />
     <!-- ... -->
     <dependencies>
       <!-- <group targetFramework=".NETCore5.0"/> -->
@@ -17,6 +17,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="bin\Release\*.*" target="lib\uap10.0"/>
+    <file src="bin\Debug\*.*" target="lib\uap10.0"/>
   </files>
 </package>
