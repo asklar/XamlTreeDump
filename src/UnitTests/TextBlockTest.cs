@@ -1,6 +1,8 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
+using TreeDumpLibrary;
 using Windows.UI;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 
@@ -58,7 +60,8 @@ namespace UnitTests
         [TestMethod]
         public void TextHighlighter()
         {
-            var dump = Helper.GetDump(() => {
+            var dump = Helper.GetDump(() =>
+            {
                 var tb = new TextBlock();
                 var th = new Windows.UI.Xaml.Documents.TextHighlighter()
                 {
@@ -95,6 +98,94 @@ namespace UnitTests
                 { "Visibility", "Visible" }
                 };
             Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+        }
+
+        [TestMethod]
+        public void AttachedPropWithValue()
+        {
+            var dp = DependencyProperty.RegisterAttached("MyAttachedProp", typeof(int), typeof(TextBlock), PropertyMetadata.Create(42));
+            var dump = Helper.GetDump(() =>
+            {
+
+                var tb = new TextBlock();
+                tb.SetValue(dp, 7);
+                return tb;
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp", Property = dp } });
+
+            JObject dumpObject = JObject.Parse(dump);
+            JObject obj = new JObject {
+                {  "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
+                { "Clip", null },
+                { "FlowDirection", "LeftToRight"},
+                { "Foreground", "#FF000000" },
+                { "HorizontalAlignment", "Stretch" },
+                { "Margin", "0,0,0,0"},
+                {"Padding", "0,0,0,0"},
+                {"RenderSize", new JArray {0, 0 } },
+                {"Text", ""},
+                { "VerticalAlignment", "Stretch"},
+                { "Visibility", "Visible"},
+                { "MyAttachedProp", 7 },
+            };
+
+            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+        }
+        [TestMethod]
+        public void AttachedPropWithDefaultValue()
+        {
+            var dp = DependencyProperty.RegisterAttached("MyAttachedProp", typeof(int), typeof(TextBlock), PropertyMetadata.Create(42));
+            var dump = Helper.GetDump(() =>
+            {
+                var tb = new TextBlock();
+                tb.ClearValue(dp);
+                return tb;
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp", Property = dp } });
+
+            var dumpObject = JObject.Parse(dump);
+            var obj = new JObject {
+                { "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
+                { "Clip", null },
+                { "FlowDirection", "LeftToRight" },
+                { "Foreground", "#FF000000" },
+                { "HorizontalAlignment", "Stretch" },
+                { "Margin", "0,0,0,0" },
+                { "Padding", "0,0,0,0" },
+                { "RenderSize", new JArray{0,0 } },
+                { "Text", "" },
+                { "VerticalAlignment", "Stretch" },
+                { "Visibility", "Visible"},
+                {"MyAttachedProp", 42 }
+            };
+            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+        }
+
+        [TestMethod]
+        public void AttachedPropWithNaN()
+        {
+            var dp2 = DependencyProperty.RegisterAttached("MyAttachedProp2", typeof(double), typeof(TextBlock), PropertyMetadata.Create(double.NaN));
+            var dump = Helper.GetDump(() =>
+            {
+                var tb = new TextBlock();
+                tb.ClearValue(dp2);
+                return tb;
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp2", Property = dp2 } });
+
+            var dumpObject = JObject.Parse(dump);
+            var obj = new JObject {
+                { "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
+                { "Clip", null },
+                { "FlowDirection", "LeftToRight" },
+                { "Foreground", "#FF000000" },
+                { "HorizontalAlignment", "Stretch" },
+                { "Margin", "0,0,0,0" },
+                { "Padding", "0,0,0,0" },
+                { "RenderSize", new JArray{0,0 } },
+                { "Text", "" },
+                { "VerticalAlignment", "Stretch" },
+                { "Visibility", "Visible"},
+            };
+            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+
         }
     }
 }
