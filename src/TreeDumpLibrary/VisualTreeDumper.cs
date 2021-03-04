@@ -17,19 +17,10 @@ using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
 {
-    /// <summary>
-    /// The mode to use (Default, or Json)
-    /// </summary>
-    public enum DumpTreeMode
+    public sealed class AttachedProperty
     {
-        /// <summary>
-        /// a Key=Value format
-        /// </summary>
-        Default,
-        /// <summary>
-        /// Json format
-        /// </summary>
-        Json
+        public string Name { get; set; }
+        public DependencyProperty Property { get; set; }
     }
 
     /// <summary>
@@ -107,6 +98,16 @@ namespace TreeDumpLibrary
                 }
                 return _filter.ShouldVisitPropertyValue(s);
             }
+
+            public IEnumerable<string> Properties
+            {
+                get
+                {
+                    return _filter.PropertyNameAllowList;
+                }
+            }
+
+            public IEnumerable<AttachedProperty> AttachedProperties { get { return _filter.AttachedProperties; } }
         }
 
         /// <summary>
@@ -142,19 +143,16 @@ namespace TreeDumpLibrary
         /// <param name="root">The node to start the walk from</param>
         /// <param name="excludedNode">A node to exclude, or null</param>
         /// <param name="additionalProperties">a list of additional properties to extract from each node</param>
-        /// <param name="mode">The format to use (Json or default)</param>
+        /// <param name="attachedProps">a list of attached properties to extract from each node</param>
         /// <returns></returns>
-        public static string DumpTree(DependencyObject root, DependencyObject excludedNode, IList<string> additionalProperties, DumpTreeMode mode)
+        public static string DumpTree(DependencyObject root, DependencyObject excludedNode, IEnumerable<string> additionalProperties, IEnumerable<AttachedProperty> attachedProps)
         {
             var propertyFilter = new DefaultFilter();
             ((List<string>)propertyFilter.PropertyNameAllowList).AddRange(additionalProperties);
+            propertyFilter.AttachedProperties = attachedProps;
 
-            IPropertyValueTranslator translator = (mode == DumpTreeMode.Json ?
-                new JsonPropertyValueTranslator() as IPropertyValueTranslator :
-                new DefaultPropertyValueTranslator());
-            IVisualTreeLogger logger = (mode == DumpTreeMode.Json ?
-                new JsonVisualTreeLogger() as IVisualTreeLogger :
-                new DefaultVisualTreeLogger());
+            IPropertyValueTranslator translator = new JsonPropertyValueTranslator();
+            IVisualTreeLogger logger = new JsonVisualTreeLogger();
             Visitor visitor = new Visitor(propertyFilter, translator, logger);
 
             WalkThroughTree(root, excludedNode, visitor);
@@ -186,7 +184,7 @@ namespace TreeDumpLibrary
                                   orderby property.Name
                                   select property);
 
-                var attachedPropInfo = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Static)
+                var propsFromStaticGetters = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Static)
                                         where property.Name.EndsWith("Property") &&
                                               visitor.ShouldVisitProperty(property.Name.Substring(0, property.Name.Length - "Property".Length)) &&
                                               !selfProps.Contains(property, new PropertyInfoComparer()) &&
@@ -202,13 +200,45 @@ namespace TreeDumpLibrary
                     value = GetObjectProperty(node, prop);
                     visitor.VisitProperty(prop.Name, value);
                 }
+                var unVisitedProperties = visitor.Properties.Except(selfProps.Select(x => x.Name)).ToList();
 
-                foreach (var prop in attachedPropInfo)
+                foreach (var prop in propsFromStaticGetters)
                 {
                     var attachedDP = prop.GetValue(null) as DependencyProperty;
                     var name = prop.Name.Substring(0, prop.Name.Length - "Property".Length);
                     var value = node.GetValue(attachedDP);
-                    visitor.VisitProperty(name, value);
+                    if (visitor.ShouldVisitPropertyValue(name, value))
+                    {
+                        visitor.VisitProperty(name, value);
+                    }
+                    unVisitedProperties.Remove(name);
+                }
+
+                foreach (var propName in unVisitedProperties)
+                {
+                    // try to use reflection to find a Getter
+                    try
+                    {
+                        var getter = node.GetType().GetMethod($"Get{propName}");
+                        if (getter != null && !getter.IsStatic && getter.IsPublic && !getter.IsAbstract && getter.GetParameters().Length == 0)
+                        {
+                            var value = getter.Invoke(node, new object[] { });
+                            if (visitor.ShouldVisitPropertyValue(propName, value))
+                            {
+                                visitor.VisitProperty(propName, value);
+                            }
+                            unVisitedProperties.Remove(propName);
+                        }
+                        
+                    } catch { }
+                }
+
+                foreach (var attachedDP in visitor.AttachedProperties) {
+                    var value = node.GetValue(attachedDP.Property);
+                    if (visitor.ShouldVisitPropertyValue(attachedDP.Name, value))
+                    {
+                        visitor.VisitProperty(attachedDP.Name, value);
+                    }
                 }
 
                 if (automationId != null)
@@ -277,6 +307,7 @@ namespace TreeDumpLibrary
     internal sealed class DefaultFilter
     {
         public IList<string> PropertyNameAllowList { get; set; }
+        public IEnumerable<AttachedProperty> AttachedProperties { get; internal set; }
 
         public DefaultFilter()
         {
