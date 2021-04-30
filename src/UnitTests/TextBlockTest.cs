@@ -65,7 +65,8 @@ namespace UnitTests
                 var tb = new TextBlock();
                 var th = new Windows.UI.Xaml.Documents.TextHighlighter()
                 {
-                    Background = new SolidColorBrush(Colors.Red)
+                    Background = new SolidColorBrush(Colors.Red),
+                    Foreground = new SolidColorBrush(Colors.Green)
                 };
                 th.Ranges.Add(new Windows.UI.Xaml.Documents.TextRange() { Length = 3, StartIndex = 1 });
                 tb.TextHighlighters.Add(th);
@@ -86,6 +87,7 @@ namespace UnitTests
                 { "TextHighlighters", new JArray {
                     new JObject {
                         { "Background", "#FFFF0000"},
+                        { "Foreground", "#FF008000"},
                         { "Ranges", new JArray {
                             new JObject {
                                 { "StartIndex", 1 },
