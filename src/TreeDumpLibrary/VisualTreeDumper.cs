@@ -394,7 +394,7 @@ namespace TreeDumpLibrary
             else if (propertyObject is TextHighlighter)
             {
                 var th = propertyObject as TextHighlighter;
-                return $"{{\n\"Background\": {PropertyValueToString(null, th.Background)},\n\"Ranges\": {PropertyValueToString(null, th.Ranges)}\n}}\n";
+                return $"{{\n\"Background\": {PropertyValueToString(null, th.Background)},\n\"Foreground\": {PropertyValueToString(null, th.Foreground)},\n\"Ranges\": {PropertyValueToString(null, th.Ranges)}\n}}\n";
             }
             else if (propertyObject is TextRange)
             {
