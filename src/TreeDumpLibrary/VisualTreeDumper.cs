@@ -21,6 +21,7 @@ namespace TreeDumpLibrary
     {
         public string Name { get; set; }
         public DependencyProperty Property { get; set; }
+        public bool ExcludeIfValueIsUnset { get; set; } = false;
     }
 
     /// <summary>
@@ -234,6 +235,11 @@ namespace TreeDumpLibrary
                 }
 
                 foreach (var attachedDP in visitor.AttachedProperties) {
+                    if (attachedDP.ExcludeIfValueIsUnset && node.ReadLocalValue(attachedDP.Property) == DependencyProperty.UnsetValue)
+                    {
+                        continue;
+                    }
+
                     var value = node.GetValue(attachedDP.Property);
                     if (visitor.ShouldVisitPropertyValue(attachedDP.Name, value))
                     {

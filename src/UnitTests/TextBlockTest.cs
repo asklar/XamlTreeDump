@@ -137,6 +137,7 @@ namespace UnitTests
 
             Assert.AreEqual(dumpObject.ToString(), obj.ToString());
         }
+
         [TestMethod]
         public void AttachedPropWithDefaultValue()
         {
@@ -146,7 +147,7 @@ namespace UnitTests
                 var tb = new TextBlock();
                 tb.ClearValue(dp);
                 return tb;
-            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp", Property = dp } });
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp", Property = dp, ExcludeIfValueIsUnset = false } });
 
             var dumpObject = JObject.Parse(dump);
             var obj = new JObject {
@@ -161,7 +162,35 @@ namespace UnitTests
                 { "Text", "" },
                 { "VerticalAlignment", "Stretch" },
                 { "Visibility", "Visible"},
-                {"MyAttachedProp", 42 }
+                { "MyAttachedProp", 42 }
+            };
+            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+        }
+
+        [TestMethod]
+        public void AttachedPropWithDefaultValue_ExclueIfValueIsUnset()
+        {
+            var dp = DependencyProperty.RegisterAttached("MyAttachedProp", typeof(int), typeof(TextBlock), PropertyMetadata.Create(42));
+            var dump = Helper.GetDump(() =>
+            {
+                var tb = new TextBlock();
+                tb.ClearValue(dp);
+                return tb;
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp", Property = dp, ExcludeIfValueIsUnset = true } });
+
+            var dumpObject = JObject.Parse(dump);
+            var obj = new JObject {
+                { "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
+                { "Clip", null },
+                { "FlowDirection", "LeftToRight" },
+                { "Foreground", "#FF000000" },
+                { "HorizontalAlignment", "Stretch" },
+                { "Margin", "0,0,0,0" },
+                { "Padding", "0,0,0,0" },
+                { "RenderSize", new JArray{0,0 } },
+                { "Text", "" },
+                { "VerticalAlignment", "Stretch" },
+                { "Visibility", "Visible"}
             };
             Assert.AreEqual(dumpObject.ToString(), obj.ToString());
         }
