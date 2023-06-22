@@ -104,7 +104,7 @@ namespace UnitTests
                 { "VerticalAlignment", "Stretch" },
                 { "Visibility", "Visible" }
                 };
-            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
         }
 
         [TestMethod]
@@ -135,7 +135,7 @@ namespace UnitTests
                 { "MyAttachedProp", 7 },
             };
 
-            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
         }
 
         [TestMethod]
@@ -164,7 +164,7 @@ namespace UnitTests
                 { "Visibility", "Visible"},
                 { "MyAttachedProp", 42 }
             };
-            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
         }
 
         [TestMethod]
@@ -192,7 +192,7 @@ namespace UnitTests
                 { "VerticalAlignment", "Stretch" },
                 { "Visibility", "Visible"}
             };
-            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
         }
 
         [TestMethod]
@@ -220,7 +220,7 @@ namespace UnitTests
                 { "VerticalAlignment", "Stretch" },
                 { "Visibility", "Visible"},
             };
-            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
 
         }
 
@@ -256,7 +256,7 @@ namespace UnitTests
                 { "Visibility", "Visible"},
                 { "MyAttachedProp3", "Test1" }
             };
-            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
         }
     }
 }
