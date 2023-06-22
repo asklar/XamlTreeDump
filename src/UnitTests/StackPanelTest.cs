@@ -1,7 +1,10 @@
-﻿using System.Collections.Generic;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System.Collections.Generic;
+using Windows.UI.Xaml.Controls;
 
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Windows.UI.Xaml.Controls;
 
 namespace UnitTests
 {
