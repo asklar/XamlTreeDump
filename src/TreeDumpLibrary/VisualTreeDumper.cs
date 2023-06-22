@@ -377,6 +377,10 @@ namespace TreeDumpLibrary
             {
                 return "null";
             }
+            else if (propertyObject is bool)
+            {
+                return propertyObject.ToString().ToLowerInvariant();
+            }
             else if (propertyObject is int || propertyObject is bool || propertyObject is double)
             {
                 return propertyObject.ToString();

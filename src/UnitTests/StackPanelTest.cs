@@ -1,4 +1,6 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using System.Collections.Generic;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Windows.UI.Xaml.Controls;
 
 namespace UnitTests
@@ -6,6 +8,8 @@ namespace UnitTests
     [TestClass]
     public class StackPanelTest
     {
+        private static IList<string> extraProps = new List<string>() { "IsChecked" };
+
         [TestMethod]
         public void AnythingTag()
         {
@@ -15,7 +19,7 @@ namespace UnitTests
                 CheckBox cb = new CheckBox() { IsChecked = true };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -45,7 +49,7 @@ namespace UnitTests
                 CheckBox cb = new CheckBox() { IsChecked = true, Visibility = Windows.UI.Xaml.Visibility.Collapsed };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -77,7 +81,7 @@ namespace UnitTests
                 cb = new CheckBox() { IsChecked = true };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -103,6 +107,7 @@ namespace UnitTests
     'FlowDirection': 'LeftToRight',
     'Foreground': '#FF000000',
     'HorizontalAlignment': 'Stretch',
+    'IsChecked': true,
     'Margin': '0,0,0,0',
     'Padding': '0,0,0,0',
     'RenderSize': [0, 0],
@@ -126,7 +131,7 @@ namespace UnitTests
                 CheckBox cb = new CheckBox() { IsChecked = true };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -152,6 +157,7 @@ namespace UnitTests
     'FlowDirection': 'LeftToRight',
     'Foreground': '#FF000000',
     'HorizontalAlignment': 'Stretch',
+    'IsChecked': true,
     'Margin': '0,0,0,0',
     'Padding': '0,0,0,0',
     'RenderSize': [0, 0],
