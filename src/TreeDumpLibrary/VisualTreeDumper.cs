@@ -179,20 +179,20 @@ namespace TreeDumpLibrary
             if (visitor.ShouldVisitPropertiesForNode(node))
             {
                 var selfProps = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                  where visitor.ShouldVisitProperty(property.Name) &&
-                                        visitor.ShouldVisitPropertyValue(property.Name,
-                                            GetObjectProperty(node, property))
-                                  orderby property.Name
-                                  select property);
+                                 where visitor.ShouldVisitProperty(property.Name) &&
+                                       visitor.ShouldVisitPropertyValue(property.Name,
+                                           GetObjectProperty(node, property))
+                                 orderby property.Name
+                                 select property);
 
                 var propsFromStaticGetters = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Static)
-                                        where property.Name.EndsWith("Property") &&
-                                              visitor.ShouldVisitProperty(property.Name.Substring(0, property.Name.Length - "Property".Length)) &&
-                                              !selfProps.Contains(property, new PropertyInfoComparer()) &&
-                                              typeof(DependencyProperty).IsAssignableFrom(property.PropertyType)
-                                        orderby property.Name
-                                        select property);
-                
+                                              where property.Name.EndsWith("Property") &&
+                                                    visitor.ShouldVisitProperty(property.Name.Substring(0, property.Name.Length - "Property".Length)) &&
+                                                    !selfProps.Contains(property, new PropertyInfoComparer()) &&
+                                                    typeof(DependencyProperty).IsAssignableFrom(property.PropertyType)
+                                              orderby property.Name
+                                              select property);
+
                 var automationId = node.GetValue(AutomationProperties.AutomationIdProperty);
 
                 foreach (var prop in selfProps)
@@ -230,11 +230,13 @@ namespace TreeDumpLibrary
                             }
                             unVisitedProperties.Remove(propName);
                         }
-                        
-                    } catch { }
+
+                    }
+                    catch { }
                 }
 
-                foreach (var attachedDP in visitor.AttachedProperties) {
+                foreach (var attachedDP in visitor.AttachedProperties)
+                {
                     if (attachedDP.ExcludeIfValueIsUnset && node.ReadLocalValue(attachedDP.Property) == DependencyProperty.UnsetValue)
                     {
                         continue;
@@ -306,7 +308,7 @@ namespace TreeDumpLibrary
             }
         }
     }
-    
+
     /// <summary>
     /// The set of properties to report
     /// </summary>

@@ -30,7 +30,8 @@ namespace UnitTests
         internal static ManualResetEvent RunOnUIThread(Action action)
         {
             ManualResetEvent manualResetEvent = new ManualResetEvent(false);
-            Queue.TryEnqueue(() => {
+            Queue.TryEnqueue(() =>
+            {
                 action();
                 manualResetEvent.Set();
             });
