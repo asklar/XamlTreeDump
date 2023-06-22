@@ -168,7 +168,7 @@ namespace UnitTests
         }
 
         [TestMethod]
-        public void AttachedPropWithDefaultValue_ExclueIfValueIsUnset()
+        public void AttachedPropWithDefaultValue_ExcludeIfValueIsUnset()
         {
             var dp = DependencyProperty.RegisterAttached("MyAttachedProp", typeof(int), typeof(TextBlock), PropertyMetadata.Create(42));
             var dump = Helper.GetDump(() =>
@@ -222,6 +222,41 @@ namespace UnitTests
             };
             Assert.AreEqual(dumpObject.ToString(), obj.ToString());
 
+        }
+
+        public enum AttachedEnumValue
+        {
+            Test1,
+            Test2
+        }
+
+        [TestMethod]
+        public void AttachedPropWithEnumAndDefaultValue()
+        {
+            var dp3 = DependencyProperty.RegisterAttached("MyAttachedProp3", typeof(AttachedEnumValue), typeof(TextBlock), PropertyMetadata.Create(AttachedEnumValue.Test1));
+            var dump = Helper.GetDump(() =>
+            {
+                var tb = new TextBlock();
+                tb.ClearValue(dp3);
+                return tb;
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp3", Property = dp3, ExcludeIfValueIsUnset = false } });
+
+            var dumpObject = JObject.Parse(dump);
+            var obj = new JObject {
+                { "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
+                { "Clip", null },
+                { "FlowDirection", "LeftToRight" },
+                { "Foreground", "#FF000000" },
+                { "HorizontalAlignment", "Stretch" },
+                { "Margin", "0,0,0,0" },
+                { "Padding", "0,0,0,0" },
+                { "RenderSize", new JArray{0,0 } },
+                { "Text", "" },
+                { "VerticalAlignment", "Stretch" },
+                { "Visibility", "Visible"},
+                { "MyAttachedProp3", "Test1" }
+            };
+            Assert.AreEqual(dumpObject.ToString(), obj.ToString());
         }
     }
 }
