@@ -421,6 +421,10 @@ namespace TreeDumpLibrary
             {
                 return Quote(propertyObject.ToString());
             }
+            else if (propertyObject is Enum)
+            {
+                return Quote(Enum.GetName(propertyObject.GetType(), propertyObject));
+            }
             else if (propertyObject is IEnumerable)
             {
                 var sb = new StringBuilder();
