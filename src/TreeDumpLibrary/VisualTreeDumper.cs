@@ -17,11 +17,14 @@ using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
 {
+    public delegate object PropertyValueConverter(object propertyValue);
+
     public sealed class AttachedProperty
     {
         public string Name { get; set; }
         public DependencyProperty Property { get; set; }
         public bool ExcludeIfValueIsUnset { get; set; } = false;
+        public PropertyValueConverter PropertyValueConverter { get; set; } = null;
     }
 
     /// <summary>
@@ -243,6 +246,12 @@ namespace TreeDumpLibrary
                     }
 
                     var value = node.GetValue(attachedDP.Property);
+
+                    if (attachedDP.PropertyValueConverter != null)
+                    {
+                        value = attachedDP.PropertyValueConverter(value);
+                    }
+
                     if (visitor.ShouldVisitPropertyValue(attachedDP.Name, value))
                     {
                         visitor.VisitProperty(attachedDP.Name, value);

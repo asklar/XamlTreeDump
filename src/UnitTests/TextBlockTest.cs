@@ -10,6 +10,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Newtonsoft.Json.Linq;
 
 using TreeDumpLibrary;
+using System;
 
 namespace UnitTests
 {
@@ -255,6 +256,35 @@ namespace UnitTests
                 { "VerticalAlignment", "Stretch" },
                 { "Visibility", "Visible"},
                 { "MyAttachedProp3", "Test1" }
+            };
+            Assert.AreEqual(obj.ToString(), dumpObject.ToString());
+        }
+
+        [TestMethod]
+        public void AttachedProp_ValueConverter()
+        {
+            var dp = DependencyProperty.RegisterAttached("MyAttachedProp", typeof(int), typeof(TextBlock), PropertyMetadata.Create(42));
+            var dump = Helper.GetDump(() =>
+            {
+                var tb = new TextBlock();
+                tb.SetValue(dp, -10);
+                return tb;
+            }, new string[] { }, new AttachedProperty[] { new AttachedProperty() { Name = "MyAttachedProp4", Property = dp, PropertyValueConverter = (o) => { return Math.Abs((int)o); } } });
+
+            var dumpObject = JObject.Parse(dump);
+            var obj = new JObject {
+                { "XamlType", "Windows.UI.Xaml.Controls.TextBlock" },
+                { "Clip", null },
+                { "FlowDirection", "LeftToRight" },
+                { "Foreground", "#FF000000" },
+                { "HorizontalAlignment", "Stretch" },
+                { "Margin", "0,0,0,0" },
+                { "Padding", "0,0,0,0" },
+                { "RenderSize", new JArray{0,0 } },
+                { "Text", "" },
+                { "VerticalAlignment", "Stretch" },
+                { "Visibility", "Visible"},
+                { "MyAttachedProp4", 10 }
             };
             Assert.AreEqual(obj.ToString(), dumpObject.ToString());
         }
