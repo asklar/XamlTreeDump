@@ -1,10 +1,13 @@
-﻿
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 using System;
 using System.Collections.Generic;
 using System.Threading;
-using TreeDumpLibrary;
 using Windows.System;
 using Windows.UI.Xaml;
+
+using TreeDumpLibrary;
 
 namespace UnitTests
 {
@@ -27,7 +30,8 @@ namespace UnitTests
         internal static ManualResetEvent RunOnUIThread(Action action)
         {
             ManualResetEvent manualResetEvent = new ManualResetEvent(false);
-            Queue.TryEnqueue(() => {
+            Queue.TryEnqueue(() =>
+            {
                 action();
                 manualResetEvent.Set();
             });

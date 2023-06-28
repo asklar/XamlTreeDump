@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 
 using System;
-using System.Linq;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using Windows.Data.Json;
 using Windows.UI.Xaml;

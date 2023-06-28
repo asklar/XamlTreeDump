@@ -17,10 +17,14 @@ using Windows.UI.Xaml.Media;
 
 namespace TreeDumpLibrary
 {
+    public delegate object PropertyValueConverter(object propertyValue);
+
     public sealed class AttachedProperty
     {
         public string Name { get; set; }
         public DependencyProperty Property { get; set; }
+        public bool ExcludeIfValueIsUnset { get; set; } = false;
+        public PropertyValueConverter PropertyValueConverter { get; set; } = null;
     }
 
     /// <summary>
@@ -178,20 +182,20 @@ namespace TreeDumpLibrary
             if (visitor.ShouldVisitPropertiesForNode(node))
             {
                 var selfProps = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance)
-                                  where visitor.ShouldVisitProperty(property.Name) &&
-                                        visitor.ShouldVisitPropertyValue(property.Name,
-                                            GetObjectProperty(node, property))
-                                  orderby property.Name
-                                  select property);
+                                 where visitor.ShouldVisitProperty(property.Name) &&
+                                       visitor.ShouldVisitPropertyValue(property.Name,
+                                           GetObjectProperty(node, property))
+                                 orderby property.Name
+                                 select property);
 
                 var propsFromStaticGetters = (from property in node.GetType().GetProperties(BindingFlags.Public | BindingFlags.Static)
-                                        where property.Name.EndsWith("Property") &&
-                                              visitor.ShouldVisitProperty(property.Name.Substring(0, property.Name.Length - "Property".Length)) &&
-                                              !selfProps.Contains(property, new PropertyInfoComparer()) &&
-                                              typeof(DependencyProperty).IsAssignableFrom(property.PropertyType)
-                                        orderby property.Name
-                                        select property);
-                
+                                              where property.Name.EndsWith("Property") &&
+                                                    visitor.ShouldVisitProperty(property.Name.Substring(0, property.Name.Length - "Property".Length)) &&
+                                                    !selfProps.Contains(property, new PropertyInfoComparer()) &&
+                                                    typeof(DependencyProperty).IsAssignableFrom(property.PropertyType)
+                                              orderby property.Name
+                                              select property);
+
                 var automationId = node.GetValue(AutomationProperties.AutomationIdProperty);
 
                 foreach (var prop in selfProps)
@@ -229,12 +233,25 @@ namespace TreeDumpLibrary
                             }
                             unVisitedProperties.Remove(propName);
                         }
-                        
-                    } catch { }
+
+                    }
+                    catch { }
                 }
 
-                foreach (var attachedDP in visitor.AttachedProperties) {
+                foreach (var attachedDP in visitor.AttachedProperties)
+                {
+                    if (attachedDP.ExcludeIfValueIsUnset && node.ReadLocalValue(attachedDP.Property) == DependencyProperty.UnsetValue)
+                    {
+                        continue;
+                    }
+
                     var value = node.GetValue(attachedDP.Property);
+
+                    if (attachedDP.PropertyValueConverter != null)
+                    {
+                        value = attachedDP.PropertyValueConverter(value);
+                    }
+
                     if (visitor.ShouldVisitPropertyValue(attachedDP.Name, value))
                     {
                         visitor.VisitProperty(attachedDP.Name, value);
@@ -300,7 +317,7 @@ namespace TreeDumpLibrary
             }
         }
     }
-    
+
     /// <summary>
     /// The set of properties to report
     /// </summary>
@@ -377,7 +394,11 @@ namespace TreeDumpLibrary
             {
                 return "null";
             }
-            else if (propertyObject is int || propertyObject is bool || propertyObject is double)
+            else if (propertyObject is bool)
+            {
+                return propertyObject.ToString().ToLowerInvariant();
+            }
+            else if (propertyObject is int || propertyObject is double)
             {
                 return propertyObject.ToString();
             }
@@ -408,6 +429,10 @@ namespace TreeDumpLibrary
             else if (propertyObject is string)
             {
                 return Quote(propertyObject.ToString());
+            }
+            else if (propertyObject is Enum)
+            {
+                return Quote(Enum.GetName(propertyObject.GetType(), propertyObject));
             }
             else if (propertyObject is IEnumerable)
             {

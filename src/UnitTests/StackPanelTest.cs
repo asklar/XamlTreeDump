@@ -1,11 +1,18 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
+using System.Collections.Generic;
 using Windows.UI.Xaml.Controls;
+
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace UnitTests
 {
     [TestClass]
     public class StackPanelTest
     {
+        private static IList<string> extraProps = new List<string>() { "IsChecked" };
+
         [TestMethod]
         public void AnythingTag()
         {
@@ -15,7 +22,7 @@ namespace UnitTests
                 CheckBox cb = new CheckBox() { IsChecked = true };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -45,7 +52,7 @@ namespace UnitTests
                 CheckBox cb = new CheckBox() { IsChecked = true, Visibility = Windows.UI.Xaml.Visibility.Collapsed };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -77,7 +84,7 @@ namespace UnitTests
                 cb = new CheckBox() { IsChecked = true };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -103,6 +110,7 @@ namespace UnitTests
     'FlowDirection': 'LeftToRight',
     'Foreground': '#FF000000',
     'HorizontalAlignment': 'Stretch',
+    'IsChecked': true,
     'Margin': '0,0,0,0',
     'Padding': '0,0,0,0',
     'RenderSize': [0, 0],
@@ -126,7 +134,7 @@ namespace UnitTests
                 CheckBox cb = new CheckBox() { IsChecked = true };
                 sp.Children.Add(cb);
                 return sp;
-            });
+            }, extraProps);
             string expected = @"{
   'XamlType': 'Windows.UI.Xaml.Controls.StackPanel',
   'Background': null,
@@ -152,6 +160,7 @@ namespace UnitTests
     'FlowDirection': 'LeftToRight',
     'Foreground': '#FF000000',
     'HorizontalAlignment': 'Stretch',
+    'IsChecked': true,
     'Margin': '0,0,0,0',
     'Padding': '0,0,0,0',
     'RenderSize': [0, 0],

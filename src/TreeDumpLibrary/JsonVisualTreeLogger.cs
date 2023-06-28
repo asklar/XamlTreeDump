@@ -55,7 +55,7 @@ namespace TreeDumpLibrary
             if (!first && !isClosing)
             {
                 _logger.Append(",\n");
-            } 
+            }
             if (isClosing)
             {
                 _logger.Append("\n");
